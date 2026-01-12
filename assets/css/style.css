@@ -146,12 +146,12 @@ nav { padding: 1.5rem 0; display: flex; justify-content: space-between; align-it
 .hero-image-wrapper:hover .hero-image { transform: scale(1.05); }
 .floating-star {
     position: absolute;
-    bottom: 30px; 
+    bottom: 18px; 
     left: 50%;    
     background: #1a1a1a;
     color: white;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -307,6 +307,11 @@ footer { border-top: 1px solid var(--footer-border); padding: 4rem 0 2rem; margi
     .hero-image-wrapper {
         width: 100%;
         max-width: 100%;
+    }
+    .floating-star {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
     }
 
     .contact-left h2 {
