@@ -39,7 +39,9 @@ body {
     color: var(--text-main); 
     font-family: var(--font-main); 
     line-height: 1.5; 
+    /* FIX: Prevents horizontal scrollbar globally */
     overflow-x: hidden; 
+    width: 100%;
     transition: background-color 0.3s ease, color 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -48,17 +50,25 @@ body {
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
-img { max-width: 100%; display: block; }
+/* FIX: Ensures images never exceed screen width */
+img { max-width: 100%; height: auto; display: block; }
 
 /* --- 2. UTILITIES & BUTTONS --- */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 2rem; 
+    /* FIX: Ensures container doesn't overflow parent */
+    width: 100%; 
+}
+
 .serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
 
 .btn { 
     display: inline-flex; align-items: center; justify-content: center; 
     padding: 12px 28px; border-radius: var(--btn-radius); 
     font-weight: 500; cursor: pointer; transition: all 0.3s ease; 
-    font-size: 0.95rem; 
+    font-size: 0.95rem; white-space: nowrap;
 }
 
 .btn-black { background-color: var(--accent-black); color: var(--btn-text); border: none; }
@@ -86,6 +96,8 @@ img { max-width: 100%; display: block; }
     margin-bottom: 4rem;
     letter-spacing: -1px;
     line-height: 1.1;
+    /* FIX: Prevents long words from forcing scroll */
+    word-wrap: break-word; 
 }
 
 /* --- 3. ANIMATIONS (SCROLL REVEAL) --- */
@@ -114,23 +126,28 @@ nav { padding: 1.5rem 0; display: flex; justify-content: space-between; align-it
 
 /* --- 5. HERO SECTION --- */
 .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding-top: 2rem; min-height: 80vh; }
-.hero-left .social-icons { display: inline-flex; gap: 1rem; margin-bottom: 2rem; background: var(--bg-white); padding: 8px 16px; border-radius: 8px; box-shadow: var(--card-shadow); }
+.hero-left .social-icons { display: inline-flex; gap: 1rem; margin-bottom: 2rem; background: var(--bg-white); padding: 8px 16px; border-radius: 8px; box-shadow: var(--card-shadow); flex-wrap: wrap; }
 .hero-left .social-icons a { font-size: 1.1rem; cursor: pointer; transition: 0.2s; color: var(--text-main); }
 .hero-left .social-icons a:hover { transform: scale(1.2); color: var(--accent-black); }
-.hero-title { font-size: 5rem; line-height: 0.95; letter-spacing: -2px; margin-bottom: 1.5rem; }
+/* FIX: Use Clamp for responsive font size */
+.hero-title { font-size: clamp(3rem, 5vw, 5rem); line-height: 0.95; letter-spacing: -2px; margin-bottom: 1.5rem; }
 .hero-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 400px; margin-bottom: 2rem; }
-.hero-image-wrapper { position: relative; border-radius: var(--border-radius); overflow: hidden; height: 500px; width: 400px; margin: 0 auto; box-shadow: var(--card-shadow); }
+.hero-image-wrapper { 
+    position: relative; 
+    border-radius: var(--border-radius); 
+    overflow: hidden; 
+    height: 500px; 
+    width: 400px; 
+    max-width: 100%; /* FIX: Prevents overflow on mobile */
+    margin: 0 auto; 
+    box-shadow: var(--card-shadow); 
+}
 .hero-image { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s ease; }
 .hero-image-wrapper:hover .hero-image { transform: scale(1.05); }
-/* PLACE THIS IN assets/css/style.css */
-
 .floating-star {
     position: absolute;
-    /* 1. Position at the bottom */
-    bottom: 18px; 
-    /* 2. Position horizontally in the middle */
+    bottom: 30px; 
     left: 50%;    
-    /* Styling */
     background: #1a1a1a;
     color: white;
     width: 60px;
@@ -142,23 +159,16 @@ nav { padding: 1.5rem 0; display: flex; justify-content: space-between; align-it
     font-size: 1.5rem;
     z-index: 2;
     border: 4px solid var(--bg-color);
-    /* 3. Use the specific animation for bottom-centering */
     animation: spin-bottom-center 10s linear infinite;
 }
-
-/* 4. Animation that keeps it centered (translateX -50%) while spinning */
 @keyframes spin-bottom-center {
-    0% {
-        transform: translateX(-50%) rotate(0deg);
-    }
-    100% {
-        transform: translateX(-50%) rotate(360deg);
-    }
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
 }
 
 /* --- 6. ABOUT SECTION --- */
 .about { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-.about-img-container { border-radius: var(--border-radius); overflow: hidden; height: 500px; }
+.about-img-container { border-radius: var(--border-radius); overflow: hidden; height: 500px; width: 100%; }
 .about-img-container img { width: 100%; height: 100%; object-fit: cover; }
 .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--text-muted); opacity: 0.8; }
 .stat-item h3 { font-size: 2.5rem; font-weight: 600; }
@@ -254,12 +264,52 @@ footer { border-top: 1px solid var(--footer-border); padding: 4rem 0 2rem; margi
 .developer-link { font-weight: 600; color: var(--text-main); opacity: 0.6; transition: 0.3s; position: relative; }
 .developer-link:hover { opacity: 1; text-decoration: underline; }
 
-/* --- 12. RESPONSIVE --- */
+/* --- 12. ROBUST RESPONSIVE FIXES --- */
+
+/* Tablet & Smaller Laptops (Max 900px) */
 @media (max-width: 900px) {
+    .container { padding: 0 1.5rem; }
     .hero, .contact, .services-grid, .about, .work-grid, .cert-grid { grid-template-columns: 1fr; gap: 3rem; }
     .hero-title, .contact-left h2 { font-size: 3rem; }
     .nav-links { display: none; }
     .edu-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .hero-image-wrapper { width: 100%; height: auto; aspect-ratio: 4/5; }
+    .about-img-container { height: auto; aspect-ratio: 16/9; }
     .footer-top { flex-direction: column; text-align: center; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+}
+
+/* Mobile Devices (Max 600px) - THE CRITICAL FIX */
+@media (max-width: 600px) {
+    .container { 
+        padding: 0 1.2rem; /* Reduces padding to give content more room */
+    }
+
+    .section-title {
+        font-size: 2.5rem; /* Prevents title overflow */
+    }
+
+    /* Stack form inputs vertically on mobile */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .cert-grid {
+        grid-template-columns: 1fr; /* Stack certs */
+    }
+    
+    .hero-title {
+        font-size: 3rem; /* Enforce readable size */
+    }
+
+    /* Fix image wrapper width on small screens */
+    .hero-image-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .contact-left h2 {
+        font-size: 2.5rem;
+    }
 }
